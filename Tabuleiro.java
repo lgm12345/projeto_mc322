@@ -13,7 +13,10 @@ public class Tabuleiro {
     }
 
     //Metodo que inicializa o tabuleiro com cada peca no respectivo lugar
-
+    public void inicializaTabuleliro() {
+        Torre torreBranca1 = new Torre(casas[1][1],true) ;
+        Torre torreBranca2 = new Torre(casas[1][8],true) ;
+    }
 
 
 

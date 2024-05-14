@@ -14,10 +14,12 @@ public class Peao extends Peca{
             if (branca) {
                 proximas[0] = 2 ;
                 proximas[1] = 3;
+                inicial = false ;
             }
             else {
                 proximas[0] = 5 ;
                 proximas[1] = 4 ;
+                inicial = false ;
             }
         }
         else {
