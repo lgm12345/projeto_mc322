@@ -11,6 +11,21 @@ public class Tabuleiro {
         }
     }
 
+    String[][] map = new String[8][8];
+
+    //metodo que mapeia as peças do tabuleiro
+    public void map(){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(casas[i][j].isOcupada()) {
+                    map[i][j] = casas[i][j].getpeca().tostring();
+                } else {
+                    map[i][j] = " ";
+                }
+            }
+        }
+    }
+
     //Metodo que inicializa o tabuleiro com cada peca no respectivo lugar
     public void inicializaTabuleliro() {
         Torre T1 = new Torre(casas[0][0],true) ;//torre branca esquerda
@@ -47,6 +62,7 @@ public class Tabuleiro {
         Peao p7 = new Peao(casas[6][6], false);
         Peao p8 = new Peao(casas[6][7], false);
 
+        map();
     }
 
     //Metodo que retorna a casa i,j do tabuleiro
@@ -59,18 +75,35 @@ public class Tabuleiro {
         return casas[i][j].isOcupada() ;
     }
 
-    //metodo que devolve um mapa das pecas
-    public String[][] map(){
-        String[][] map = new String[8][8];
+    //o metodo locatepeca recebe uma string contendo o nome de uma peça, pesquisa essa
+    //peça no array de peças gerado pelo método map e retorna suas coordenadas
+    public int[] locatepeca(String peca){
+        int[] pos = new int[2];
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
-                if(casas[i][j].isOcupada()) {
-                    map[i][j] = casas[i][j].getpeca();
-                } else {
-                    map[i][j] = " ";
+                if(map[i][j].equals(peca)){
+                    pos[0] = i;
+                    pos[1] = j;
+                    break;
                 }
             }
         }
-        return map;
+        return pos;
     }
+
+    //metodo que faz a movimentação das pecas
+    //ele toma o nome da peca, localiza a posicao inicial e final
+    public void move(String peca, int xf, int yf){
+        int[] pos = locatepeca(peca);
+        int xi = pos[0];
+        int yi = pos[1];
+        if(estaocupada(xf, yf)){//se a posica final estiver ocupada, ele "mata" a peca primeiro.
+            casas[xf][yf].getpeca().setcasa(null);
+        }
+        casas[xf][yf].colocarpeca(casas[xi][yi].getpeca());//peça colocada na nova posição
+        casas[xi][yi].removerpeca();//peça removida da posição anterior
+
+        map();//mapeamento refeito
+    }
+
 }

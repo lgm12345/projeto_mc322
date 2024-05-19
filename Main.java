@@ -1,1 +1,14 @@
-main{}
+public class main{
+    
+
+
+
+
+
+
+
+
+
+
+
+}
