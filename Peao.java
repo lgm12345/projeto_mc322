@@ -28,10 +28,7 @@ public class Peao extends Peca{
         this.promoted = true;
     }
 
-    public String getClassName() {
-        return Peao.class.getSimpleName() ;
-    }
-    int qntCasas = 0;
+    int qntcasas = 0;
     int[][] proximas = new int[2][2];
     int qntinimigas = 0;
     int[][] inimigas = new int[2][2];
@@ -45,14 +42,14 @@ public class Peao extends Peca{
     public void checknsave(Tabuleiro tabuleiro, int X, int Y){
         if(isinrange(X,Y)){ //verifica se pertence ao tabuleiro
             if(searchpeca(tabuleiro, X, Y + step) == 0){ //verifica se esta vazio
-                proximas[qntCasas][0] = X;
-                proximas[qntCasas][1] = Y + step;
+                proximas[qntcasas][0] = X;
+                proximas[qntcasas][1] = Y + step;
                 qntCasas += 1;
             } 
             if(first){
-                if(searchpeca(tabuleiro ,X, Y + 2*step) == 0){ //verifica se esta vazio
-                    proximas[qntCasas][0] = X;
-                    proximas[qntCasas][1] = Y + 2*step;
+                if(searchpeca(tabuleiro X, Y + 2*step) == 0){ //verifica se esta vazio
+                    proximas[qntcasas][0] = X;
+                    proximas[qntcasas][1] = Y + 2*step;
                     qntCasas += 1;
                 }
             }
@@ -87,7 +84,7 @@ public class Peao extends Peca{
         inimigas[1][0] = 0;
         inimigas[1][1] = 0;
         
-        qntCasas = 0;
+        qntcasas = 0;
         qntinimigas = 0;
 
         listfreepositions(tabuleiro, X, Y);

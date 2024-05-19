@@ -1,23 +1,15 @@
 public class Torre extends Peca{
-    public boolean first;
-
     public Torre(Casa casa,boolean branca) {
         super(casa) ;
         this.branca = branca ;
-        this.first = true;
     }
 
-    int qntCasas = 0;
+    int qntcasas = 0;
     int[][] proximas = new int[14][2];
     int qntinimigas = 0;
     int[][] inimigas = new int[4][2];
+    
 
-    public void moved(){
-        this.first = false ;
-    }
-    public String getClassName() {
-        return Torre.class.getSimpleName() ;
-     }
     //o metodo checknsave usa o metodo "isinrange" para verificar se a posicao x,y pertence ao tabuleiro
     //em caso positivo, verifica se a posicao esta ocupada
     //se nao, a posicao eh salva na lista de proximas posicoes e o contador eh atualizado
@@ -26,8 +18,8 @@ public class Torre extends Peca{
         boolean enemy = false;
         if(isinrange(X,Y)){ //verifica se pertence ao tabuleiro
             if(searchpeca(tabuleiro, X, Y) == 0){ //verifica se esta vazio
-                proximas[qntCasas][0] = X;
-                proximas[qntCasas][1] = Y;
+                proximas[qntcasas][0] = X;
+                proximas[qntcasas][1] = Y;
                 qntCasas += 1;
             } else if (searchpeca(tabuleiro, X, Y) ==  -1){ //se nao esta vazio, verifica se eh inimiga
                 inimigas[qntinimigas][0] = X;
@@ -73,7 +65,7 @@ public class Torre extends Peca{
             inimigas[i][0] = 0;
             inimigas[i][1] = 0;
         }
-        qntCasas = 0;
+        qntcasas = 0;
         qntinimigas = 0;
 
         listfreepositions(tabuleiro, X, Y);
