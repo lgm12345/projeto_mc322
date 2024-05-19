@@ -2,12 +2,97 @@ import java.util.Objects;
 
 public class Peao extends Peca{
     private boolean inicial ;
+    private boolean promoted;
+    private int step;
+
     public Peao(Casa casa,boolean branca) {
         super(casa) ;
         this.inicial = true ;
         this.branca = branca ;
+        this.promoted = false;
+
+        if(branca){
+            step = 1;
+        } else {
+            step = -1;
+        }
     }
 
+    int qntcasas = 0;
+    int[][] proximas = new int[2][2];
+    int qntinimigas = 0;
+    int[][] inimigas = new int[2][2];
+
+    //o metodo que movimenta o peao deve ter uma condicao: quando a coordenada de destino eh X,7 ele eh promovido a uma outra peca.
+    
+
+    //o metodo checknsave usa o metodo "isinrange" para verificar se a posicao x,y pertence ao tabuleiro
+    //em caso positivo, verifica se a posicao esta ocupada
+    //se nao, a posicao eh salva na lista de proximas posicoes e o contador eh atualizado
+    //como a movimentacao e ataque do peao eh diferente, o metodo eh modificado: o peao mata em diagonal e pode andar duas casas se for o primeiro mov.
+    public void checknsave(Tabuleiro tabuleiro, int X, int Y){
+        if(isinrange(X,Y)){ //verifica se pertence ao tabuleiro
+            if(searchpeca(tabuleiro, X, Y + step) == 0){ //verifica se esta vazio
+                proximas[qntcasas][0] = X;
+                proximas[qntcasas][1] = Y + step;
+                qntCasas += 1;
+            } 
+            if(inicial){
+                if(searchpeca(tabuleiro X, Y + 2*step) == 0){ //verifica se esta vazio
+                    proximas[qntcasas][0] = X;
+                    proximas[qntcasas][1] = Y + 2*step;
+                    qntCasas += 1;
+                    inicial = false;
+                }
+            }
+            if (searchpeca(tabuleiro, X + 1, Y + step) ==  -1){ //procura inimiga
+                inimigas[qntinimigas][0] = X + 1;
+                inimigas[qntinimigas][1] = Y + step;
+                qntinimigas += 1;
+            }
+            if (searchpeca(tabuleiro, X - 1, Y + step) ==  -1){ //procura inimiga
+                inimigas[qntinimigas][0] = X - 1;
+                inimigas[qntinimigas][1] = Y + step;
+                qntinimigas += 1;
+            }
+        }
+    }
+
+    //o metodo listfreepositions toma as coordenadas atuais do cavalo e usa o metodo checknsave em loop para guardar todas posicoes livres possiveis
+    public void listfreepositions(Tabuleiro tabuleiro, int X, int Y){
+        checknsave(tabuleiro, X, Y);
+    }
+
+    //o metodo resetpositions zera os vetores de proximas posicoes possiveis e de pecas inimigas e refaz os dois
+    public void resetpositions(Tabuleiro tabuleiro, int X, int Y){
+        
+        proximas[0][0] = 0;
+        proximas[0][1] = 0;
+        proximas[1][0] = 0;
+        proximas[1][1] = 0;
+        
+        inimigas[0][0] = 0;
+        inimigas[0][1] = 0;
+        inimigas[1][0] = 0;
+        inimigas[1][1] = 0;
+        
+        qntcasas = 0;
+        qntinimigas = 0;
+
+        listfreepositions(tabuleiro, X, Y);
+    }
+
+    int cx = 2;
+    public int[][] movmap(){
+        int[][] map = new int[cx][2];
+        for (int i = 0; i < cx; i++){
+            map[i][0] = proximas[i][0];
+            map[i][1] = proximas[i][1];
+        }
+        return map;
+    }
+
+    /*
     public int[] proximasPossiveisPosicoes() {
         int[] proximas = new int[2] ;
         if (inicial) {
@@ -32,7 +117,7 @@ public class Peao extends Peca{
         }
         return proximas ;
     }
-
+    */
 
 
 }

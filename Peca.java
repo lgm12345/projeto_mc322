@@ -2,10 +2,12 @@ public abstract class Peca {
     //os atributos da peca nao podem ser protegidos, senao outras classes nao vao conseguir ler esses dados
     protected Casa casa ;
     protected boolean branca ;
+    
 
     Peca(Casa casa) {
-        this.casa = casa ;
+        this.casa = casa;
     }
+
     public void movimento() {
 
     }
@@ -29,8 +31,8 @@ public abstract class Peca {
     }
 
     //metodo searchpeca verifica se tem uma peca na posicao x,y
-    //retorna 0 se x,y vazio; retorna 1 se peca eh amiga (peca == this.branca); retorna -1 se peca eh inimiga
-    public int searchpeca(int X, int Y){
+    //retorna 0 se x,y vazio; retorna 1 se peca eh amiga retorna -1 se peca eh inimiga
+    public int searchpeca(Tabuleiro tabuleiro, int X, int Y){
         int pecatype = 0;
         if(!tabuleiro.getCasa(X, Y).isOcupada()){
             if(tabuleiro.getCasa(X, Y).getpeca().getcolor() == branca){
@@ -40,7 +42,6 @@ public abstract class Peca {
             }
         }
         return pecatype;
-
     }
 
 }

@@ -18,13 +18,13 @@ public class Rei extends Peca {
     //em caso positivo, verifica se a posicao esta ocupada
     //se nao, a posicao eh salva na lista de proximas posicoes e o contador eh atualizado
     //se sim, verifica se eh inimiga, se for, salva como inimiga, se nao, nao salva
-    public void checknsave(int X, int Y){
+    public void checknsave(Tabuleiro tabuleiro, int X, int Y){
         if(isinrange(X,Y)){ //verifica se pertence ao tabuleiro
-            if(searchpeca(X, Y) == 0){ //verifica se esta vazio
+            if(searchpeca(tabuleiro, X, Y) == 0){ //verifica se esta vazio
                 proximas[qntcasas][0] = X;
                 proximas[qntcasas][1] = Y;
                 qntCasas += 1;
-            } else if (searchpeca(X, Y) ==  -1){ //se nao esta vazio, verifica se eh inimiga
+            } else if (searchpeca(tabuleiro, X, Y) ==  -1){ //se nao esta vazio, verifica se eh inimiga
                 inimigas[qntinimigas][0] = X;
                 inimigas[qntinimigas][1] = Y;
                 qntinimigas += 1;
@@ -33,27 +33,16 @@ public class Rei extends Peca {
     }
 
     //o metodo listfreepositions toma as coordenadas atuais do cavalo e usa o metodo checknsave em loop para guardar todas posicoes livres possiveis
-    public void listfreepositions(int X, int Y){
-        int [][] positions = new int[8][2]; //lista de posicoes para serem verificadas 
-        positionsList.add(new int[]{X + 1, Y + 1});//adicionando diagonal positiva
-        positionsList.add(new int[]{X - 1, Y - 1});//adicionando diagonal positiva
-
-        positionsList.add(new int[]{X + 1, Y - 1});//adicionando diagonal negativa
-        positionsList.add(new int[]{X - 1, Y + 1});//adicionando diagonal negativa
-
-        positionsList.add(new int[]{X + 1, Y});//adicionando posicoes horizontais
-        positionsList.add(new int[]{X - 1, Y});//adicionando posicoes horizontais
-
-        positionsList.add(new int[]{X, Y + 1});//adicionando posicoes verticais
-        positionsList.add(new int[]{X, Y - 1});//adicionando posicoes verticais
+    public void listfreepositions(Tabuleiro tabuleiro, int X, int Y){
+        int [][] positions = {{X,Y+1}, {X, Y-1}, {X+1, Y+1},{X+1, Y-1}, {X-1, Y+1}, {X-1, Y-1}, {X+1, Y}, {X-1, Y}};
 
         for (int[] coord : positions){
-            checknsave(coord[0], coord[1]);
+            checknsave(tabuleiro, coord[0], coord[1]);
         }
     }
 
     //o metodo resetpositions zera os vetores de proximas posicoes possiveis e de pecas inimigas e refaz os dois
-    public void resetpositions(int X, int Y){
+    public void resetpositions(Tabuleiro tabuleiro, int X, int Y){
         
         proximas[i][0] = 0;
         proximas[i][1] = 0;
@@ -64,7 +53,17 @@ public class Rei extends Peca {
         qntcasas = 0;
         qntinimigas = 0;
 
-        listfreepositions(X, Y);
+        listfreepositions(tabuleiro, X, Y);
+    }
+
+    int cx = 8;
+    public int[][] movmap(){
+        int[][] map = new int[cx][2];
+        for (int i = 0; i < cx; i++){
+            map[i][0] = proximas[i][0];
+            map[i][1] = proximas[i][1];
+        }
+        return map;
     }
 
 }
