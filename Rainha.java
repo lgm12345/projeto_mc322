@@ -5,6 +5,9 @@ public class Rainha extends Peca{
         this.branca = branca ;
     }
 
+    public String getClassName() {
+        return Rainha.class.getSimpleName() ;
+    }
     public int[][] possiveisProximasPosicoes(Tabuleiro tabuleiro) {
         int qntCasas = 0 ;
         int [][] possiveisCasas = new int[64][2] ;

@@ -1,3 +1,5 @@
+import static java.sql.JDBCType.NULL;
+
 public abstract class Peca {
     //os atributos da peca nao podem ser protegidos, senao outras classes nao vao conseguir ler esses dados
     protected Casa casa ;
@@ -35,7 +37,7 @@ public abstract class Peca {
     public int searchpeca(Tabuleiro tabuleiro, int X, int Y){
         int pecatype = 0;
         if(!tabuleiro.getCasa(X, Y).isOcupada()){
-            if(tabuleiro.getCasa(X, Y).getpeca().getcolor() == branca){
+            if(tabuleiro.getCasa(X, Y).getPeca().getcolor() == branca){
                 pecatype = 1;
             } else {
                 pecatype = -1;
@@ -43,5 +45,16 @@ public abstract class Peca {
         }
         return pecatype;
     }
+    public void promote() {
 
+    }
+    public void moved() {
+
+    }
+    public String getClassName() {
+        return "" ;
+    }
+    public int[][] movmap() {
+        return new int[0][0] ;
+    }
 }

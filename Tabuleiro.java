@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Tabuleiro {
     private Casa[][] casas;
 
@@ -18,7 +20,7 @@ public class Tabuleiro {
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 if(casas[i][j].isOcupada()) {
-                    map[i][j] = casas[i][j].getpeca().tostring();
+                    map[i][j] = casas[i][j].getPeca().toString();
                 } else {
                     map[i][j] = " ";
                 }
@@ -97,11 +99,28 @@ public class Tabuleiro {
         int[] pos = locatepeca(peca);
         int xi = pos[0];
         int yi = pos[1];
-        if(estaocupada(xf, yf)){//se a posica final estiver ocupada, ele "mata" a peca primeiro.
-            casas[xf][yf].getpeca().setcasa(null);
+        if(estaOcupada(xf, yf)){//se a posica final estiver ocupada, ele "mata" a peca primeiro.
+            casas[xf][yf].getPeca().setCasa(null);
         }
-        casas[xf][yf].colocarpeca(casas[xi][yi].getpeca());//peça colocada na nova posição
-        casas[xi][yi].removerpeca();//peça removida da posição anterior
+
+        casas[xf][yf].colocarPeca(casas[xi][yi].getPeca());//peça colocada na nova posição
+        casas[xi][yi].removerPeca();//peça removida da posição anterior
+
+        //condicao que verifica que as pecas que podem fazer movimentos especiais ja foram movidas e perderam o direito ao movimento especial.
+        if((Objects.equals(casas[xf][yf].getPeca().getClassName(), "Torre")) || (Objects.equals(casas[xf][yf].getPeca().getClassName(), "Peao")) || (Objects.equals(casas[xf][yf].getPeca().getClassName(), "Rei"))){
+            casas[xf][yf].getPeca().moved();
+        }
+
+        //condicao que verifica se um peao atingiu o outro lado do tabuleiro, dando direito a promocao da peca
+        if((Objects.equals(casas[xf][yf].getPeca().getClassName(), "Peao"))){
+            if(casas[xf][yf].getPeca().getcolor()){
+                if(xf == 7){
+                    casas[xf][yf].getPeca().promote();
+                } 
+            } else if (xf == 0){
+                casas[xf][yf].getPeca().promote();
+            }
+        }
 
         map();//mapeamento refeito
     }
