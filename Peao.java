@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Peao extends Peca{
+public class Peao extends Peca implements Movimentavel{
     public boolean first ;
     private boolean promoted;
     private int step;
@@ -41,7 +41,8 @@ public class Peao extends Peca{
     //em caso positivo, verifica se a posicao esta ocupada
     //se nao, a posicao eh salva na lista de proximas posicoes e o contador eh atualizado
     //como a movimentacao e ataque do peao eh diferente, o metodo eh modificado: o peao mata em diagonal e pode andar duas casas se for o primeiro mov.
-    public void checknsave(Tabuleiro tabuleiro, int X, int Y){
+    public boolean checknsave(Tabuleiro tabuleiro, int X, int Y){
+        boolean enemy = false;
         if(isinrange(X,Y)){ //verifica se pertence ao tabuleiro
             if(searchpeca(tabuleiro, X, Y + step) == 0){ //verifica se esta vazio
                 proximas[qntCasas][0] = X;
@@ -59,13 +60,16 @@ public class Peao extends Peca{
                 inimigas[qntinimigas][0] = X + 1;
                 inimigas[qntinimigas][1] = Y + step;
                 qntinimigas += 1;
+                enemy = true ;
             }
             if (searchpeca(tabuleiro, X - 1, Y + step) ==  -1){ //procura inimiga
                 inimigas[qntinimigas][0] = X - 1;
                 inimigas[qntinimigas][1] = Y + step;
                 qntinimigas += 1;
+                enemy = true ;
             }
         }
+        return enemy ;
     }
 
     //o metodo listfreepositions toma as coordenadas atuais do cavalo e usa o metodo checknsave em loop para guardar todas posicoes livres possiveis
