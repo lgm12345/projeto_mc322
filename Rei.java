@@ -3,6 +3,7 @@ public class Rei extends Peca {
     public Rei(Casa casa, boolean branca) {
         super(casa) ;
         this.branca = branca ;
+        this.first = true;
     }
 
     //observe que a movimentacao do rei tem que carregar: 1- a condicao de que ele nao fique em cheque

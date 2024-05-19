@@ -1,13 +1,13 @@
 import java.util.Objects;
 
 public class Peao extends Peca{
-    private boolean inicial ;
+    public boolean first ;
     private boolean promoted;
     private int step;
 
     public Peao(Casa casa,boolean branca) {
         super(casa) ;
-        this.inicial = true ;
+        this.first = true ;
         this.branca = branca ;
         this.promoted = false;
 
@@ -18,13 +18,22 @@ public class Peao extends Peca{
         }
     }
 
+    //metodo que identifica que o peao ja realizou o primeiro movimento
+    public void moved(){
+        this.first = false;
+    }
+
+    //metodo que identifica se o peao ja foi promovido
+    public void promote(){
+        this.promoted = true;
+    }
+
     int qntcasas = 0;
     int[][] proximas = new int[2][2];
     int qntinimigas = 0;
     int[][] inimigas = new int[2][2];
 
     //o metodo que movimenta o peao deve ter uma condicao: quando a coordenada de destino eh X,7 ele eh promovido a uma outra peca.
-    
 
     //o metodo checknsave usa o metodo "isinrange" para verificar se a posicao x,y pertence ao tabuleiro
     //em caso positivo, verifica se a posicao esta ocupada
@@ -37,12 +46,11 @@ public class Peao extends Peca{
                 proximas[qntcasas][1] = Y + step;
                 qntCasas += 1;
             } 
-            if(inicial){
+            if(first){
                 if(searchpeca(tabuleiro X, Y + 2*step) == 0){ //verifica se esta vazio
                     proximas[qntcasas][0] = X;
                     proximas[qntcasas][1] = Y + 2*step;
                     qntCasas += 1;
-                    inicial = false;
                 }
             }
             if (searchpeca(tabuleiro, X + 1, Y + step) ==  -1){ //procura inimiga

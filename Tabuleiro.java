@@ -100,8 +100,25 @@ public class Tabuleiro {
         if(estaocupada(xf, yf)){//se a posica final estiver ocupada, ele "mata" a peca primeiro.
             casas[xf][yf].getpeca().setcasa(null);
         }
+
         casas[xf][yf].colocarpeca(casas[xi][yi].getpeca());//peça colocada na nova posição
         casas[xi][yi].removerpeca();//peça removida da posição anterior
+
+        //condicao que verifica que as pecas que podem fazer movimentos especiais ja foram movidas e perderam o direito ao movimento especial.
+        if((casas[xf][yf].getpeca().getSimpleName()) == Torre.class || (casas[xf][yf].getpeca().getSimpleName()) == Peao.class || (casas[xf][yf].getpeca().getSimpleName()) == Rei.class){
+            casas[xf][yf].getpeca().moved();
+        }
+
+        //condicao que verifica se um peao atingiu o outro lado do tabuleiro, dando direito a promocao da peca
+        if((casas[xf][yf].getpeca().getSimpleName()) == Peao.class){ 
+            if(casas[xf][yf].getpeca().getcolor()){
+                if(xf == 7){
+                    casas[xf][yf].getpeca().promote();
+                } 
+            } else if (xf == 0){
+                casas[xf][yf].getpeca().promote();
+            }
+        }
 
         map();//mapeamento refeito
     }

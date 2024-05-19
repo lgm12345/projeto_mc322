@@ -1,14 +1,20 @@
 public class Torre extends Peca{
+    public boolean first;
+
     public Torre(Casa casa,boolean branca) {
         super(casa) ;
         this.branca = branca ;
+        this.first = true;
     }
 
     int qntcasas = 0;
     int[][] proximas = new int[14][2];
     int qntinimigas = 0;
     int[][] inimigas = new int[4][2];
-    
+
+    public void moved(){
+        this.first = false ;
+    }
 
     //o metodo checknsave usa o metodo "isinrange" para verificar se a posicao x,y pertence ao tabuleiro
     //em caso positivo, verifica se a posicao esta ocupada
