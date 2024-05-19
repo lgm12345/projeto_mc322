@@ -10,7 +10,7 @@ public class Bispo extends Peca implements Movimentavel{
     int qntinimigas = 0;
     int[][] inimigas = new int[4][2];
     
-    public String getClassName() {
+    public static String getClassName() {
         return Bispo.class.getSimpleName() ;
     }
     //o metodo checknsave usa o metodo "isinrange" para verificar se a posicao x,y pertence ao tabuleiro

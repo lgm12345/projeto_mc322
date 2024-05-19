@@ -17,7 +17,7 @@ public class Peao extends Peca implements Movimentavel{
             step = -1;
         }
     }
-    public String getClassName() {
+    public static String getClassName() {
         return Peao.class.getSimpleName() ;
     }
     //metodo que identifica que o peao ja realizou o primeiro movimento

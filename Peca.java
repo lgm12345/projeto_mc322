@@ -51,7 +51,7 @@ public abstract class Peca {
     public void moved() {
 
     }
-    public String getClassName() {
+    public static String getClassName() {
         return "" ;
     }
     public int[][] movmap() {

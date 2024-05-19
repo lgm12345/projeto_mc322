@@ -5,7 +5,7 @@ public class Rainha extends Peca{
         this.branca = branca ;
     }
 
-    public String getClassName() {
+    public static String getClassName() {
         return Rainha.class.getSimpleName() ;
     }
     public int[][] possiveisProximasPosicoes(Tabuleiro tabuleiro) {

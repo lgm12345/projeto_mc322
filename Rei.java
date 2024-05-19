@@ -15,7 +15,9 @@ public class Rei extends Peca implements Movimentavel{
     int qntinimigas = 0;
     int[][] inimigas = new int[8][2];
     
-
+    public static String getClassName() {
+        return Rei.class.getSimpleName() ;
+    }
     //o metodo checknsave usa o metodo "isinrange" para verificar se a posicao x,y pertence ao tabuleiro
     //em caso positivo, verifica se a posicao esta ocupada
     //se nao, a posicao eh salva na lista de proximas posicoes e o contador eh atualizado
