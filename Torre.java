@@ -1,10 +1,10 @@
-public class Torre extends Peca{
+public class Torre extends Peca implements Movimentavel{
     public Torre(Casa casa,boolean branca) {
         super(casa) ;
         this.branca = branca ;
     }
 
-    int qntcasas = 0;
+    int qntCasas = 0;
     int[][] proximas = new int[14][2];
     int qntinimigas = 0;
     int[][] inimigas = new int[4][2];
@@ -18,8 +18,8 @@ public class Torre extends Peca{
         boolean enemy = false;
         if(isinrange(X,Y)){ //verifica se pertence ao tabuleiro
             if(searchpeca(tabuleiro, X, Y) == 0){ //verifica se esta vazio
-                proximas[qntcasas][0] = X;
-                proximas[qntcasas][1] = Y;
+                proximas[qntCasas][0] = X;
+                proximas[qntCasas][1] = Y;
                 qntCasas += 1;
             } else if (searchpeca(tabuleiro, X, Y) ==  -1){ //se nao esta vazio, verifica se eh inimiga
                 inimigas[qntinimigas][0] = X;
@@ -65,7 +65,7 @@ public class Torre extends Peca{
             inimigas[i][0] = 0;
             inimigas[i][1] = 0;
         }
-        qntcasas = 0;
+        qntCasas = 0;
         qntinimigas = 0;
 
         listfreepositions(tabuleiro, X, Y);
