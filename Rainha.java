@@ -1,7 +1,7 @@
 public class Rainha extends Peca{
 
-    public Rainha(Casa casa, boolean branca) {
-        super(casa) ;
+    public Rainha(String nome,Casa casa, boolean branca) {
+        super(nome,casa) ;
         this.branca = branca ;
     }
 

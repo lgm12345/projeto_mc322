@@ -1,8 +1,8 @@
 public class Rei extends Peca implements Movimentavel{
     public boolean first ;
 
-    public Rei(Casa casa, boolean branca) {
-        super(casa) ;
+    public Rei(String nome,Casa casa, boolean branca) {
+        super(nome,casa) ;
         this.branca = branca ;
         this.first = true;
     }
