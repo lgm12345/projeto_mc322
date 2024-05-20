@@ -5,7 +5,9 @@ public abstract class Peca {
     protected String nome ;
     protected Casa casa ;
     protected boolean branca ;
-    
+    public String getClassName() {
+        return "";
+    }
 
     Peca(String nome,Casa casa) {
         this.nome = nome ;

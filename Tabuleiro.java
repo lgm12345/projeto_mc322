@@ -68,7 +68,7 @@ public class Tabuleiro {
         casas[7][1].colocarPeca(h1);
         Bispo b1 = new Bispo("b1",casas[7][2], false); // bispo branco esquerdo
         casas[7][2].colocarPeca(b1);
-        Rei kk = new Rei("kk"casas[7][3], false); // rei branco
+        Rei kk = new Rei("kk",casas[7][3], false); // rei branco
         casas[7][3].colocarPeca(kk);
         Rainha qq = new Rainha("qq",casas[7][4], false); // rainha branca
         casas[7][4].colocarPeca(qq);
@@ -137,12 +137,12 @@ public class Tabuleiro {
         casas[xi][yi].removerPeca();//peça removida da posição anterior
 
         //condicao que verifica que as pecas que podem fazer movimentos especiais ja foram movidas e perderam o direito ao movimento especial.
-        if((Objects.equals(casas[xf][yf].getPeca().getNome(), nome)) || (Objects.equals(casas[xf][yf].getPeca().getNome(), nome)) || (Objects.equals(casas[xf][yf].getPeca().getNome(), nome))){
+        if((Objects.equals(casas[xf][yf].getPeca().getClassName(), "Torre")) || (Objects.equals(casas[xf][yf].getPeca().getClassName(), "Peao")) || (Objects.equals(casas[xf][yf].getPeca().getClassName(), "Rei"))){
             casas[xf][yf].getPeca().moved();
         }
 
         //condicao que verifica se um peao atingiu o outro lado do tabuleiro, dando direito a promocao da peca
-        if((Objects.equals(casas[xf][yf].getPeca().getNome(), nome))){
+        if((Objects.equals(casas[xf][yf].getPeca().getClassName(), "Peao"))){
             if(casas[xf][yf].getPeca().getcolor()){
                 if(xf == 7){
                     casas[xf][yf].getPeca().promote();

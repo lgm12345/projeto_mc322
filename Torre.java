@@ -8,7 +8,9 @@ public class Torre extends Peca implements Movimentavel{
     int[][] proximas = new int[14][2];
     int qntinimigas = 0;
     int[][] inimigas = new int[4][2];
-
+    public String getClassName() {
+        return NomePeca.TORRE.getNome();
+    }
     //o metodo checknsave usa o metodo "isinrange" para verificar se a posicao x,y pertence ao tabuleiro
     //em caso positivo, verifica se a posicao esta ocupada
     //se nao, a posicao eh salva na lista de proximas posicoes e o contador eh atualizado
