@@ -66,7 +66,24 @@ public class Cavalo extends Peca implements  Movimentavel{
         return map;
     }
 
-
+    public boolean move(Tabuleiro tabuleiro,int X,int Y) {
+        resetpositions(tabuleiro,X,Y);
+        for (int i = 0;i < proximas.length;i++) {
+            if ((proximas[i][0] == X) && (proximas[i][1] == Y)) {
+                tabuleiro.getCasa(super.getCasa().getCoordenadaX(),super.getCasa().getCoordenadaY()) ;
+                tabuleiro.getCasa(X,Y).colocarPeca(this) ;
+                return true ;
+            }
+        }
+        for (int i = 0;i < inimigas.length;i++) {
+            if ((inimigas[i][0] == X) && (inimigas[i][1] == Y)) {
+                tabuleiro.getCasa(X,Y).removerPeca();
+                tabuleiro.getCasa(X,Y).colocarPeca(this);
+                return true ;
+            }
+        }
+        return false ;
+    }
     /*
     //Método que retorna em uma matriz as possiveis proximas posicoes para o cavalo ir sem contar ainda obstrução
     //no caminho,sendo a primeira coluna a posicao x e a segunda coluna a posicao y

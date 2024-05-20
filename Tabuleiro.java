@@ -125,7 +125,7 @@ public class Tabuleiro {
 
     //metodo que faz a movimentação das pecas
     //ele toma o nome da peca, localiza a posicao inicial e final
-    public void move(String nome, int xf, int yf){
+    /*public void move(String nome, int xf, int yf){
         int[] pos = locatepeca(nome);
         int xi = pos[0];
         int yi = pos[1];
@@ -154,5 +154,5 @@ public class Tabuleiro {
 
         map();//mapeamento refeito
     }
-
+    */
 }

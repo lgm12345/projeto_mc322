@@ -5,8 +5,8 @@ public class Peao extends Peca implements Movimentavel{
     private boolean promoted;
     private int step;
 
-    public Peao(Casa casa,boolean branca) {
-        super(casa) ;
+    public Peao(String nome,Casa casa,boolean branca) {
+        super(nome,casa) ;
         this.first = true ;
         this.branca = branca ;
         this.promoted = false;
@@ -16,9 +16,6 @@ public class Peao extends Peca implements Movimentavel{
         } else {
             step = -1;
         }
-    }
-    public String getClassName() {
-        return NomePeca.PEAO.getNome();
     }
     //metodo que identifica que o peao ja realizou o primeiro movimento
     public void moved(){
@@ -94,6 +91,25 @@ public class Peao extends Peca implements Movimentavel{
         qntinimigas = 0;
 
         listfreepositions(tabuleiro, X, Y);
+    }
+
+    public boolean move(Tabuleiro tabuleiro,int X,int Y) {
+        resetpositions(tabuleiro, X, Y);
+        for (int i = 0; i < proximas.length; i++) {
+            if ((proximas[i][0] == X) && (proximas[i][1] == Y)) {
+                tabuleiro.getCasa(super.getCasa().getCoordenadaX(), super.getCasa().getCoordenadaY());
+                tabuleiro.getCasa(X, Y).colocarPeca(this);
+                return true;
+            }
+        }
+        for (int i = 0; i < inimigas.length; i++) {
+            if ((inimigas[i][0] == X) && (inimigas[i][1] == Y)) {
+                tabuleiro.getCasa(X, Y).removerPeca();
+                tabuleiro.getCasa(X, Y).colocarPeca(this);
+                return true;
+            }
+        }
+        return false;
     }
 
     int cx = 2;

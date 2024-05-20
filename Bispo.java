@@ -74,6 +74,25 @@ public class Bispo extends Peca implements Movimentavel{
         listfreepositions(tabuleiro, X, Y);
     }
 
+    public boolean move(Tabuleiro tabuleiro,int X,int Y) {
+        resetpositions(tabuleiro, X, Y);
+        for (int i = 0; i < proximas.length; i++) {
+            if ((proximas[i][0] == X) && (proximas[i][1] == Y)) {
+                tabuleiro.getCasa(super.getCasa().getCoordenadaX(), super.getCasa().getCoordenadaY());
+                tabuleiro.getCasa(X, Y).colocarPeca(this);
+                return true;
+            }
+        }
+        for (int i = 0; i < inimigas.length; i++) {
+            if ((inimigas[i][0] == X) && (inimigas[i][1] == Y)) {
+                tabuleiro.getCasa(X, Y).removerPeca();
+                tabuleiro.getCasa(X, Y).colocarPeca(this);
+                return true;
+            }
+        }
+        return false;
+    }
+
     int cx = 14;
     public int[][] movmap(){
         int[][] map = new int[cx][2];
