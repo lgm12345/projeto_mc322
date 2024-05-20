@@ -111,6 +111,7 @@ public class Tabuleiro {
     //peça no array de peças gerado pelo método map e retorna suas coordenadas
     public int[] locatepeca(String peca){
         int[] pos = new int[2];
+        pos[0]=-1;
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
                 if(map[i][j].equals(peca)){

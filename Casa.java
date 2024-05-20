@@ -35,4 +35,5 @@ public class Casa {
     public Peca getPeca() {
         return peca;
     }
+
 }
