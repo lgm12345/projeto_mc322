@@ -1,31 +1,35 @@
-public class Cavalo extends Peca {
-    public Cavalo(Casa casa, boolean branca) {
-        super(casa);
+public class Cavalo extends Peca implements  Movimentavel{
+    public Cavalo(String nome,Casa casa, boolean branca) {
+        super(nome,casa);
         this.branca = branca;
     }
     
-    int qntcasas = 0;
+    int qntCasas = 0;
     int[][] proximas = new int[8][2];
     int qntinimigas = 0;
     int[][] inimigas = new int[8][2];
-    
-
+    public String getClassName() {
+        return NomePeca.CAVALO.getNome();
+    }
     //o metodo checknsave usa o metodo "isinrange" para verificar se a posicao x,y pertence ao tabuleiro
     //em caso positivo, verifica se a posicao esta ocupada
     //se nao, a posicao eh salva na lista de proximas posicoes e o contador eh atualizado
     //se sim, verifica se eh inimiga, se for, salva como inimiga, se nao, nao salva
-    public void checknsave(Tabuleiro tabuleiro, int X, int Y){
+    public boolean checknsave(Tabuleiro tabuleiro, int X, int Y){
+        boolean enemy = false ;
         if(isinrange(X,Y)){ //verifica se pertence ao tabuleiro
             if(searchpeca(tabuleiro, X, Y) == 0){ //verifica se esta vazio
-                proximas[qntcasas][0] = X;
-                proximas[qntcasas][1] = Y;
+                proximas[qntCasas][0] = X;
+                proximas[qntCasas][1] = Y;
                 qntCasas += 1;
             } else if (searchpeca(tabuleiro, X, Y) ==  -1){ //se nao esta vazio, verifica se eh inimiga
                 inimigas[qntinimigas][0] = X;
                 inimigas[qntinimigas][1] = Y;
                 qntinimigas += 1;
+                enemy = true ;
             }
         }
+        return enemy ;
     }
 
     //o metodo listfreepositions toma as coordenadas atuais do cavalo e usa o metodo checknsave em loop para guardar todas posicoes livres possiveis
@@ -46,7 +50,7 @@ public class Cavalo extends Peca {
             inimigas[i][0] = 0;
             inimigas[i][1] = 0;
         }
-        qntcasas = 0;
+        qntCasas = 0;
         qntinimigas = 0;
 
         listfreepositions(tabuleiro, X, Y);
@@ -62,7 +66,24 @@ public class Cavalo extends Peca {
         return map;
     }
 
-
+    public boolean move(Tabuleiro tabuleiro,int X,int Y) {
+        resetpositions(tabuleiro,X,Y);
+        for (int i = 0;i < proximas.length;i++) {
+            if ((proximas[i][0] == X) && (proximas[i][1] == Y)) {
+                tabuleiro.getCasa(super.getCasa().getCoordenadaX(),super.getCasa().getCoordenadaY()) ;
+                tabuleiro.getCasa(X,Y).colocarPeca(this) ;
+                return true ;
+            }
+        }
+        for (int i = 0;i < inimigas.length;i++) {
+            if ((inimigas[i][0] == X) && (inimigas[i][1] == Y)) {
+                tabuleiro.getCasa(X,Y).removerPeca();
+                tabuleiro.getCasa(X,Y).colocarPeca(this);
+                return true ;
+            }
+        }
+        return false ;
+    }
     /*
     //Método que retorna em uma matriz as possiveis proximas posicoes para o cavalo ir sem contar ainda obstrução
     //no caminho,sendo a primeira coluna a posicao x e a segunda coluna a posicao y

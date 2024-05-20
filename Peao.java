@@ -1,12 +1,12 @@
 import java.util.Objects;
 
-public class Peao extends Peca{
+public class Peao extends Peca implements Movimentavel{
     public boolean first ;
     private boolean promoted;
     private int step;
 
-    public Peao(Casa casa,boolean branca) {
-        super(casa) ;
+    public Peao(String nome,Casa casa,boolean branca) {
+        super(nome,casa) ;
         this.first = true ;
         this.branca = branca ;
         this.promoted = false;
@@ -17,7 +17,6 @@ public class Peao extends Peca{
             step = -1;
         }
     }
-
     //metodo que identifica que o peao ja realizou o primeiro movimento
     public void moved(){
         this.first = false;
@@ -28,7 +27,7 @@ public class Peao extends Peca{
         this.promoted = true;
     }
 
-    int qntcasas = 0;
+    int qntCasas = 0;
     int[][] proximas = new int[2][2];
     int qntinimigas = 0;
     int[][] inimigas = new int[2][2];
@@ -39,17 +38,18 @@ public class Peao extends Peca{
     //em caso positivo, verifica se a posicao esta ocupada
     //se nao, a posicao eh salva na lista de proximas posicoes e o contador eh atualizado
     //como a movimentacao e ataque do peao eh diferente, o metodo eh modificado: o peao mata em diagonal e pode andar duas casas se for o primeiro mov.
-    public void checknsave(Tabuleiro tabuleiro, int X, int Y){
+    public boolean checknsave(Tabuleiro tabuleiro, int X, int Y){
+        boolean enemy = false;
         if(isinrange(X,Y)){ //verifica se pertence ao tabuleiro
             if(searchpeca(tabuleiro, X, Y + step) == 0){ //verifica se esta vazio
-                proximas[qntcasas][0] = X;
-                proximas[qntcasas][1] = Y + step;
+                proximas[qntCasas][0] = X;
+                proximas[qntCasas][1] = Y + step;
                 qntCasas += 1;
             } 
             if(first){
-                if(searchpeca(tabuleiro X, Y + 2*step) == 0){ //verifica se esta vazio
-                    proximas[qntcasas][0] = X;
-                    proximas[qntcasas][1] = Y + 2*step;
+                if(searchpeca(tabuleiro ,X, Y + 2*step) == 0){ //verifica se esta vazio
+                    proximas[qntCasas][0] = X;
+                    proximas[qntCasas][1] = Y + 2*step;
                     qntCasas += 1;
                 }
             }
@@ -57,13 +57,16 @@ public class Peao extends Peca{
                 inimigas[qntinimigas][0] = X + 1;
                 inimigas[qntinimigas][1] = Y + step;
                 qntinimigas += 1;
+                enemy = true ;
             }
             if (searchpeca(tabuleiro, X - 1, Y + step) ==  -1){ //procura inimiga
                 inimigas[qntinimigas][0] = X - 1;
                 inimigas[qntinimigas][1] = Y + step;
                 qntinimigas += 1;
+                enemy = true ;
             }
         }
+        return enemy ;
     }
 
     //o metodo listfreepositions toma as coordenadas atuais do cavalo e usa o metodo checknsave em loop para guardar todas posicoes livres possiveis
@@ -84,10 +87,29 @@ public class Peao extends Peca{
         inimigas[1][0] = 0;
         inimigas[1][1] = 0;
         
-        qntcasas = 0;
+        qntCasas = 0;
         qntinimigas = 0;
 
         listfreepositions(tabuleiro, X, Y);
+    }
+
+    public boolean move(Tabuleiro tabuleiro,int X,int Y) {
+        resetpositions(tabuleiro, X, Y);
+        for (int i = 0; i < proximas.length; i++) {
+            if ((proximas[i][0] == X) && (proximas[i][1] == Y)) {
+                tabuleiro.getCasa(super.getCasa().getCoordenadaX(), super.getCasa().getCoordenadaY());
+                tabuleiro.getCasa(X, Y).colocarPeca(this);
+                return true;
+            }
+        }
+        for (int i = 0; i < inimigas.length; i++) {
+            if ((inimigas[i][0] == X) && (inimigas[i][1] == Y)) {
+                tabuleiro.getCasa(X, Y).removerPeca();
+                tabuleiro.getCasa(X, Y).colocarPeca(this);
+                return true;
+            }
+        }
+        return false;
     }
 
     int cx = 2;

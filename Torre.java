@@ -1,21 +1,16 @@
-public class Torre extends Peca{
-    public boolean first;
-
-    public Torre(Casa casa,boolean branca) {
-        super(casa) ;
+public class Torre extends Peca implements Movimentavel{
+    public Torre(String nome,Casa casa,boolean branca) {
+        super(nome,casa) ;
         this.branca = branca ;
-        this.first = true;
     }
 
-    int qntcasas = 0;
+    int qntCasas = 0;
     int[][] proximas = new int[14][2];
     int qntinimigas = 0;
     int[][] inimigas = new int[4][2];
-
-    public void moved(){
-        this.first = false ;
+    public String getClassName() {
+        return NomePeca.TORRE.getNome();
     }
-
     //o metodo checknsave usa o metodo "isinrange" para verificar se a posicao x,y pertence ao tabuleiro
     //em caso positivo, verifica se a posicao esta ocupada
     //se nao, a posicao eh salva na lista de proximas posicoes e o contador eh atualizado
@@ -24,8 +19,8 @@ public class Torre extends Peca{
         boolean enemy = false;
         if(isinrange(X,Y)){ //verifica se pertence ao tabuleiro
             if(searchpeca(tabuleiro, X, Y) == 0){ //verifica se esta vazio
-                proximas[qntcasas][0] = X;
-                proximas[qntcasas][1] = Y;
+                proximas[qntCasas][0] = X;
+                proximas[qntCasas][1] = Y;
                 qntCasas += 1;
             } else if (searchpeca(tabuleiro, X, Y) ==  -1){ //se nao esta vazio, verifica se eh inimiga
                 inimigas[qntinimigas][0] = X;
@@ -71,10 +66,29 @@ public class Torre extends Peca{
             inimigas[i][0] = 0;
             inimigas[i][1] = 0;
         }
-        qntcasas = 0;
+        qntCasas = 0;
         qntinimigas = 0;
 
         listfreepositions(tabuleiro, X, Y);
+    }
+
+    public boolean move(Tabuleiro tabuleiro,int X,int Y) {
+        resetpositions(tabuleiro, X, Y);
+        for (int i = 0; i < proximas.length; i++) {
+            if ((proximas[i][0] == X) && (proximas[i][1] == Y)) {
+                tabuleiro.getCasa(super.getCasa().getCoordenadaX(), super.getCasa().getCoordenadaY());
+                tabuleiro.getCasa(X, Y).colocarPeca(this);
+                return true;
+            }
+        }
+        for (int i = 0; i < inimigas.length; i++) {
+            if ((inimigas[i][0] == X) && (inimigas[i][1] == Y)) {
+                tabuleiro.getCasa(X, Y).removerPeca();
+                tabuleiro.getCasa(X, Y).colocarPeca(this);
+                return true;
+            }
+        }
+        return false;
     }
 
     int cx = 14;
