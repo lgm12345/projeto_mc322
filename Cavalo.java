@@ -9,8 +9,8 @@ public class Cavalo extends Peca implements  Movimentavel{
     int qntinimigas = 0;
     int[][] inimigas = new int[8][2];
     
-    public static String getClassName() {
-        return Cavalo.class.getSimpleName() ;
+    public String getClassName() {
+        return NomePeca.CAVALO.getNome() ;
     }
     //o metodo checknsave usa o metodo "isinrange" para verificar se a posicao x,y pertence ao tabuleiro
     //em caso positivo, verifica se a posicao esta ocupada
