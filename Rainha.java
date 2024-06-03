@@ -46,13 +46,13 @@ public class Rainha extends Peca {
             lengths[2]++;
             positions[3][lengths[3]] = (new int[]{linha, coluna - i});//adicionando posicoes verticais negativas
             lengths[3]++;
-            positions[4][lengths[4]] = (new int[]{linha + i, coluna}); // Adicionando posições horizontais positivas
+            positions[4][lengths[4]] = (new int[]{linha + i, coluna + i}); // Adicionando posições horizontais positivas
             lengths[4]++;
-            positions[5][lengths[5]] = new int[]{linha, coluna + i}; // Adicionando posições verticais positivas
+            positions[5][lengths[5]] = new int[]{linha - i, coluna + i}; // Adicionando posições verticais positivas
             lengths[5]++;
-            positions[6][lengths[6]] = new int[]{linha - i, coluna}; // Adicionando posições horizontais negativas
+            positions[6][lengths[6]] = new int[]{linha - i, coluna - i}; // Adicionando posições horizontais negativas
             lengths[6]++;
-            positions[7][lengths[7]] = new int[]{linha, coluna - i}; // Adicionando posições verticais negativas
+            positions[7][lengths[7]] = new int[]{linha + i, coluna - i}; // Adicionando posições verticais negativas
             lengths[7]++;
         }
 
