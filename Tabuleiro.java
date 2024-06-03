@@ -6,9 +6,9 @@ public class Tabuleiro {
     //Construtor que cria o Tabuleiro e as 64 casas cada uma com suas respectivas coordenadas
     public Tabuleiro() {
         casas = new Casa[8][8];
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                casas[i][j] = new Casa(i, j);
+        for (int linha = 0; linha < 8; linha++) {
+            for (int coluna = 0; coluna < 8; coluna++) {
+                casas[linha][coluna] = new Casa(linha, coluna);
             }
         }
     }
@@ -17,12 +17,12 @@ public class Tabuleiro {
 
     //metodo que mapeia as peças do tabuleiro
     public void map(){
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                if(casas[i][j].isOcupada()) {
-                    map[i][j] = casas[i][j].getPeca().getNome();
+        for(int linha = 0; linha < 8; linha++){
+            for(int coluna = 0; coluna < 8; coluna++){
+                if(casas[linha][coluna].isOcupada()) {
+                    map[linha][coluna] = casas[linha][coluna].getPeca().getNome();
                 } else {
-                    map[i][j] = " ";
+                    map[linha][coluna] = " ";
                 }
             }
         }
@@ -98,13 +98,13 @@ public class Tabuleiro {
     }
 
     //Metodo que retorna a casa i,j do tabuleiro
-    public Casa getCasa(int i,int j) {
-        return casas[i][j] ;
+    public Casa getCasa(int linha,int coluna) {
+        return casas[linha][coluna] ;
     }
 
     //Metodo que checa se a casa i,j esta ocupada
-    public boolean estaOcupada(int i,int j) {
-        return casas[i][j].isOcupada() ;
+    public boolean estaOcupada(int linha,int coluna) {
+        return casas[linha][coluna].isOcupada() ;
     }
 
     //o metodo locatepeca recebe uma string contendo o nome de uma peça, pesquisa essa
@@ -123,6 +123,34 @@ public class Tabuleiro {
         return pos;
     }
 
+    public boolean moverPeca(int linhaOrigem,int colunaOrigem,int linhaDestino,int colunaDestino) {
+        Peca peca = getCasa(linhaOrigem,colunaOrigem).getPeca() ;
+        if (peca instanceof Peao) {
+            Peao peao = (Peao) peca ;
+            return peao.move(this,linhaDestino,colunaDestino) ;
+        }
+        else if (peca instanceof Torre) {
+            Torre torre = (Torre) peca ;
+            return torre.move(this,linhaDestino,colunaDestino) ;
+        }
+        else if (peca instanceof Cavalo) {
+            Cavalo cavalo = (Cavalo) peca ;
+            return cavalo.move(this,linhaDestino,colunaDestino) ;
+        }
+        else if (peca instanceof Bispo) {
+            Bispo bispo =  (Bispo) peca ;
+            return bispo.move(this,linhaDestino,colunaDestino) ;
+        }
+        else if (peca instanceof Rainha) {
+            Rainha rainha = (Rainha) peca ;
+            return rainha.move(this,linhaDestino,colunaDestino) ;
+        }
+        else if (peca instanceof Rei) {
+            Rei rei = (Rei) peca ;
+            return rei.move(this,linhaDestino,colunaDestino) ;
+        }
+        return false ;
+    }
     //metodo que faz a movimentação das pecas
     //ele toma o nome da peca, localiza a posicao inicial e final
     /*public void move(String nome, int xf, int yf){

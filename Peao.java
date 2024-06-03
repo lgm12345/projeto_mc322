@@ -38,44 +38,52 @@ public class Peao extends Peca implements Movimentavel{
     //em caso positivo, verifica se a posicao esta ocupada
     //se nao, a posicao eh salva na lista de proximas posicoes e o contador eh atualizado
     //como a movimentacao e ataque do peao eh diferente, o metodo eh modificado: o peao mata em diagonal e pode andar duas casas se for o primeiro mov.
-    public boolean checknsave(Tabuleiro tabuleiro, int X, int Y){
+    public boolean checknsave(Tabuleiro tabuleiro, int linha, int coluna){
         boolean enemy = false;
-        if(isinrange(X,Y)){ //verifica se pertence ao tabuleiro
-            if(searchpeca(tabuleiro, X, Y + step) == 0){ //verifica se esta vazio
-                proximas[qntCasas][0] = X;
-                proximas[qntCasas][1] = Y + step;
-                qntCasas += 1;
-            } 
-            if(first){
-                if(searchpeca(tabuleiro ,X, Y + 2*step) == 0){ //verifica se esta vazio
-                    proximas[qntCasas][0] = X;
-                    proximas[qntCasas][1] = Y + 2*step;
+        if(isinrange(linha,coluna)) { //verifica se pertence ao tabuleiro
+            if (isinrange(linha + step, coluna)) {
+                if (searchpeca(tabuleiro, linha + step, coluna) == 0) { //verifica se esta vazio
+                    proximas[qntCasas][0] = linha + step;
+                    proximas[qntCasas][1] = coluna;
                     qntCasas += 1;
                 }
             }
-            if (searchpeca(tabuleiro, X + 1, Y + step) ==  -1){ //procura inimiga
-                inimigas[qntinimigas][0] = X + 1;
-                inimigas[qntinimigas][1] = Y + step;
-                qntinimigas += 1;
-                enemy = true ;
+            if (first) {
+                if (isinrange(linha + 2 * step, coluna)) {
+                    if (searchpeca(tabuleiro, linha + 2 * step, coluna) == 0) { //verifica se esta vazio
+                        proximas[qntCasas][0] = linha + 2 * step;
+                        proximas[qntCasas][1] = coluna;
+                        qntCasas += 1;
+                    }
+                }
             }
-            if (searchpeca(tabuleiro, X - 1, Y + step) ==  -1){ //procura inimiga
-                inimigas[qntinimigas][0] = X - 1;
-                inimigas[qntinimigas][1] = Y + step;
-                qntinimigas += 1;
-                enemy = true ;
+            if (isinrange(linha + step, coluna + 1)) {
+                if (searchpeca(tabuleiro, linha + step, coluna + 1) == -1) { //procura inimiga
+                    inimigas[qntinimigas][0] = linha + step;
+                    inimigas[qntinimigas][1] = coluna + 1;
+                    qntinimigas += 1;
+                    enemy = true;
+                }
+            }
+            if (isinrange(linha + step, coluna - 1)) {
+                if (searchpeca(tabuleiro, linha + step, coluna - 1) == -1) { //procura inimiga
+                    inimigas[qntinimigas][0] = linha + step;
+                    inimigas[qntinimigas][1] = coluna - 1;
+                    qntinimigas += 1;
+                    enemy = true;
+                }
             }
         }
         return enemy ;
     }
 
     //o metodo listfreepositions toma as coordenadas atuais do cavalo e usa o metodo checknsave em loop para guardar todas posicoes livres possiveis
-    public void listfreepositions(Tabuleiro tabuleiro, int X, int Y){
-        checknsave(tabuleiro, X, Y);
+    public void listfreepositions(Tabuleiro tabuleiro, int linha, int coluna){
+        checknsave(tabuleiro, linha, coluna);
     }
 
     //o metodo resetpositions zera os vetores de proximas posicoes possiveis e de pecas inimigas e refaz os dois
-    public void resetpositions(Tabuleiro tabuleiro, int X, int Y){
+    public void resetpositions(Tabuleiro tabuleiro, int linha,int coluna){
         
         proximas[0][0] = 0;
         proximas[0][1] = 0;
@@ -90,22 +98,28 @@ public class Peao extends Peca implements Movimentavel{
         qntCasas = 0;
         qntinimigas = 0;
 
-        listfreepositions(tabuleiro, X, Y);
+        listfreepositions(tabuleiro, linha, coluna);
     }
 
-    public boolean move(Tabuleiro tabuleiro,int X,int Y) {
-        resetpositions(tabuleiro, X, Y);
+    public boolean move(Tabuleiro tabuleiro,int linhaDestino,int colunaDestino) {
+        resetpositions(tabuleiro, super.getCasa().getLinha(), super.getCasa().getColuna());
         for (int i = 0; i < proximas.length; i++) {
-            if ((proximas[i][0] == X) && (proximas[i][1] == Y)) {
-                tabuleiro.getCasa(super.getCasa().getCoordenadaX(), super.getCasa().getCoordenadaY());
-                tabuleiro.getCasa(X, Y).colocarPeca(this);
+            if ((proximas[i][0] == linhaDestino) && (proximas[i][1] == colunaDestino)) {
+                tabuleiro.getCasa(super.getCasa().getLinha(), super.getCasa().getColuna()).removerPeca();
+                tabuleiro.getCasa(linhaDestino, colunaDestino).colocarPeca(this);
+                if (first) {
+                    moved() ;
+                }
                 return true;
             }
         }
         for (int i = 0; i < inimigas.length; i++) {
-            if ((inimigas[i][0] == X) && (inimigas[i][1] == Y)) {
-                tabuleiro.getCasa(X, Y).removerPeca();
-                tabuleiro.getCasa(X, Y).colocarPeca(this);
+            if ((inimigas[i][0] == linhaDestino) && (inimigas[i][1] == colunaDestino)) {
+                tabuleiro.getCasa(linhaDestino, colunaDestino).removerPeca();
+                tabuleiro.getCasa(linhaDestino, colunaDestino).colocarPeca(this);
+                if (first) {
+                    moved() ;
+                }
                 return true;
             }
         }
@@ -121,33 +135,5 @@ public class Peao extends Peca implements Movimentavel{
         }
         return map;
     }
-
-    /*
-    public int[] proximasPossiveisPosicoes() {
-        int[] proximas = new int[2] ;
-        if (inicial) {
-            if (branca) {
-                proximas[0] = 2 ;
-                proximas[1] = 3;
-                inicial = false ;
-            }
-            else {
-                proximas[0] = 5 ;
-                proximas[1] = 4 ;
-                inicial = false ;
-            }
-        }
-        else {
-            if(branca) {
-                proximas[0] = proximas[1] = casa.getCoordenadaY() + 1 ;
-            }
-            else {
-                proximas[0] = proximas[1] = casa.getCoordenadaY() - 1 ;
-            }
-        }
-        return proximas ;
-    }
-    */
-
 
 }

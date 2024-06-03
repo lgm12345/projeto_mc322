@@ -5,13 +5,14 @@ public abstract class Peca {
     protected String nome ;
     protected Casa casa ;
     protected boolean branca ;
-    public String getClassName() {
-        return "";
-    }
 
     Peca(String nome,Casa casa) {
         this.nome = nome ;
         this.casa = casa;
+    }
+
+    public String getClassName() {
+        return "";
     }
 
     public void movimento() {
@@ -25,14 +26,18 @@ public abstract class Peca {
         this.casa = casa ;
     }
 
+    public Casa getCasa() {
+        return casa ;
+    }
+
     public boolean getcolor(){
         return branca;
     }
 
     //metodo isinrange verifica se a posicao x,y esta dentro dos limites do tabuleiro
-    public boolean isinrange(int X, int Y){
+    public boolean isinrange(int linha, int coluna){
         boolean range = false;
-        if( (X <= 7) && (X >= 0) && (Y <= 7) && (Y >= 0)){
+        if( (linha <= 7) && (linha >= 0) && (coluna <= 7) && (coluna >= 0)){
             range = true;
         }
         return range;
@@ -40,10 +45,10 @@ public abstract class Peca {
 
     //metodo searchpeca verifica se tem uma peca na posicao x,y
     //retorna 0 se x,y vazio; retorna 1 se peca eh amiga retorna -1 se peca eh inimiga
-    public int searchpeca(Tabuleiro tabuleiro, int X, int Y){
+    public int searchpeca(Tabuleiro tabuleiro, int linha, int coluna){
         int pecatype = 0;
-        if(!tabuleiro.getCasa(X, Y).isOcupada()){
-            if(tabuleiro.getCasa(X, Y).getPeca().getcolor() == branca){
+        if(tabuleiro.getCasa(linha, coluna).isOcupada()){
+            if(tabuleiro.getCasa(linha, coluna).getPeca().getcolor() == branca){
                 pecatype = 1;
             } else {
                 pecatype = -1;
@@ -60,4 +65,6 @@ public abstract class Peca {
     public int[][] movmap() {
         return new int[0][0] ;
     }
+
+    public abstract boolean move(Tabuleiro tabuleiro,int X,int Y) ;
 }

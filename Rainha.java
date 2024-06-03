@@ -1,8 +1,8 @@
-public class Rainha extends Peca{
+public class Rainha extends Peca {
 
-    public Rainha(String nome,Casa casa, boolean branca) {
-        super(nome,casa) ;
-        this.branca = branca ;
+    public Rainha(String nome, Casa casa, boolean branca) {
+        super(nome, casa);
+        this.branca = branca;
     }
 
     int qntCasas = 0;
@@ -15,44 +15,44 @@ public class Rainha extends Peca{
     //em caso positivo, verifica se a posicao esta ocupada
     //se nao, a posicao eh salva na lista de proximas posicoes e o contador eh atualizado
     //se sim, verifica se eh inimiga, se for, salva como inimiga, se nao, nao salva
-    public boolean checknsave(Tabuleiro tabuleiro, int X, int Y){
-        boolean enemy = false ;
-        if(isinrange(X,Y)){ //verifica se pertence ao tabuleiro
-            if(searchpeca(tabuleiro, X, Y) == 0){ //verifica se esta vazio
-                proximas[qntCasas][0] = X;
-                proximas[qntCasas][1] = Y;
+    public boolean checknsave(Tabuleiro tabuleiro, int linha, int coluna) {
+        boolean enemy = false;
+        if (isinrange(linha, coluna)) { //verifica se pertence ao tabuleiro
+            if (searchpeca(tabuleiro, linha, coluna) == 0) { //verifica se esta vazio
+                proximas[qntCasas][0] = linha;
+                proximas[qntCasas][1] = coluna;
                 qntCasas += 1;
-                enemy = true ;
-            } else if (searchpeca(tabuleiro, X, Y) ==  -1){ //se nao esta vazio, verifica se eh inimiga
-                inimigas[qntinimigas][0] = X;
-                inimigas[qntinimigas][1] = Y;
+                enemy = true;
+            } else if (searchpeca(tabuleiro, linha, coluna) == -1) { //se nao esta vazio, verifica se eh inimiga
+                inimigas[qntinimigas][0] = linha;
+                inimigas[qntinimigas][1] = coluna;
                 qntinimigas += 1;
-                enemy = true ;
+                enemy = true;
             }
         }
-        return enemy ;
+        return enemy;
     }
 
     //o metodo listfreepositions toma as coordenadas atuais do cavalo e usa o metodo checknsave em loop para guardar todas posicoes livres possiveis
-    public void listfreepositions(Tabuleiro tabuleiro, int X, int Y){
-        int [][][] positions = new int[8][14][2]; //lista de posicoes para serem verificadas
+    public void listfreepositions(Tabuleiro tabuleiro, int linha, int coluna) {
+        int[][][] positions = new int[8][14][2]; //lista de posicoes para serem verificadas
         int[] lengths = new int[8]; // Controla o número de posições
-        for (int i = 1; i < 8; i++){//adicionando posicoes da torre
-            positions[0][lengths[0]] = (new int[]{X + i, Y});//adicionando posicoes horizontais positivas
+        for (int i = 1; i < 8; i++) {//adicionando posicoes da torre
+            positions[0][lengths[0]] = (new int[]{linha + i, coluna});//adicionando posicoes horizontais positivas
             lengths[0]++;
-            positions[1][lengths[1]] = (new int[]{X, Y + i});//adicionando posicoes verticais positivas
+            positions[1][lengths[1]] = (new int[]{linha, coluna + i});//adicionando posicoes verticais positivas
             lengths[1]++;
-            positions[2][lengths[2]] = (new int[]{X - i, Y});//adicionando posicoes horizontais negativas
+            positions[2][lengths[2]] = (new int[]{linha - i, coluna});//adicionando posicoes horizontais negativas
             lengths[2]++;
-            positions[3][lengths[3]] = (new int[]{X, Y - i});//adicionando posicoes verticais negativas
+            positions[3][lengths[3]] = (new int[]{linha, coluna - i});//adicionando posicoes verticais negativas
             lengths[3]++;
-            positions[4][lengths[4]] = (new int[]{X + i, Y}); // Adicionando posições horizontais positivas
+            positions[4][lengths[4]] = (new int[]{linha + i, coluna}); // Adicionando posições horizontais positivas
             lengths[4]++;
-            positions[5][lengths[5]] = new int[]{X, Y + i}; // Adicionando posições verticais positivas
+            positions[5][lengths[5]] = new int[]{linha, coluna + i}; // Adicionando posições verticais positivas
             lengths[5]++;
-            positions[6][lengths[6]] = new int[]{X - i, Y}; // Adicionando posições horizontais negativas
+            positions[6][lengths[6]] = new int[]{linha - i, coluna}; // Adicionando posições horizontais negativas
             lengths[6]++;
-            positions[7][lengths[7]] = new int[]{X, Y - i}; // Adicionando posições verticais negativas
+            positions[7][lengths[7]] = new int[]{linha, coluna - i}; // Adicionando posições verticais negativas
             lengths[7]++;
         }
 
@@ -67,48 +67,49 @@ public class Rainha extends Peca{
     }
 
     //o metodo resetpositions zera os vetores de proximas posicoes possiveis e de pecas inimigas e refaz os dois
-    public void resetpositions(Tabuleiro tabuleiro, int X, int Y){
-        for (int i = 0; i < 21; i++){
+    public void resetpositions(Tabuleiro tabuleiro, int linha, int coluna) {
+        for (int i = 0; i < 21; i++) {
             proximas[i][0] = 0;
             proximas[i][1] = 0;
         }
-        for (int i = 0; i < 8; i++){
+        for (int i = 0; i < 8; i++) {
             inimigas[i][0] = 0;
             inimigas[i][1] = 0;
         }
         qntCasas = 0;
         qntinimigas = 0;
 
-        listfreepositions(tabuleiro, X, Y);
+        listfreepositions(tabuleiro, linha, coluna);
     }
 
     int cx = 21;
-    public int[][] movmap(){
+
+    public int[][] movmap() {
         int[][] map = new int[cx][2];
-        for (int i = 0; i < cx; i++){
+        for (int i = 0; i < cx; i++) {
             map[i][0] = proximas[i][0];
             map[i][1] = proximas[i][1];
         }
         return map;
     }
 
-    public boolean move(Tabuleiro tabuleiro,int X,int Y) {
-        resetpositions(tabuleiro,X,Y);
-        for (int i = 0;i < proximas.length;i++) {
-            if ((proximas[i][0] == X) && (proximas[i][1] == Y)) {
-                tabuleiro.getCasa(super.getCasa().getCoordenadaX(),super.getCasa().getCoordenadaY()) ;
-                tabuleiro.getCasa(X,Y).colocarPeca(this) ;
-                return true ;
+    public boolean move(Tabuleiro tabuleiro, int linha, int coluna) {
+        resetpositions(tabuleiro, super.getCasa().getLinha(), super.getCasa().getColuna());
+        for (int i = 0; i < proximas.length; i++) {
+            if ((proximas[i][0] == linha) && (proximas[i][1] == coluna)) {
+                tabuleiro.getCasa(super.getCasa().getLinha(), super.getCasa().getColuna()).removerPeca();
+                tabuleiro.getCasa(linha, coluna).colocarPeca(this);
+                return true;
             }
         }
-        for (int i = 0;i < inimigas.length;i++) {
-            if ((inimigas[i][0] == X) && (inimigas[i][1] == Y)) {
-                tabuleiro.getCasa(X,Y).removerPeca();
-                tabuleiro.getCasa(X,Y).colocarPeca(this);
-                return true ;
+        for (int i = 0; i < inimigas.length; i++) {
+            if ((inimigas[i][0] == linha) && (inimigas[i][1] == coluna)) {
+                tabuleiro.getCasa(linha, coluna).removerPeca();
+                tabuleiro.getCasa(linha, coluna).colocarPeca(this);
+                return true;
             }
         }
-        return false ;
+        return false;
     /*
     public int[][] possiveisProximasPosicoes(Tabuleiro tabuleiro) {
         int qntCasas = 0 ;
@@ -160,4 +161,5 @@ public class Rainha extends Peca{
         return possiveisCasas ;
     }
     */
+    }
 }

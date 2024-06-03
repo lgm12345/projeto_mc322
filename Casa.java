@@ -3,9 +3,9 @@ public class Casa {
     private boolean ocupada ;
     private Peca peca ;
 
-    public Casa(int coordenadax,int coordenaday) {
-        this.coordenadas[0] = coordenadax ;
-        this.coordenadas[1] = coordenaday ;
+    public Casa(int linha,int coluna) {
+        this.coordenadas[0] = linha ;
+        this.coordenadas[1] = coluna ;
         this.ocupada = false ;
         this.peca = null ;
     }
@@ -13,18 +13,21 @@ public class Casa {
     public void colocarPeca(Peca peca) {
         this.peca = peca;
         this.ocupada = true;
+        peca.setCasa(this);
+        String linha = String.valueOf(coordenadas[0]) ;
+        String coluna = String.valueOf(coordenadas[1]) ;
+        System.out.println(peca.getNome() + "colocada na posicao" + linha + coluna) ;
     }
-
     public void removerPeca() {
         this.ocupada = false ;
         this.peca = null ;
     }
 
-    public int getCoordenadaX() {
+    public int getLinha() {
         return coordenadas[0] ;
     }
 
-    public int getCoordenadaY() {
+    public int getColuna() {
         return coordenadas[1] ;
     }
 

@@ -67,7 +67,7 @@ public class Rei extends Peca implements Movimentavel{
         resetpositions(tabuleiro, X, Y);
         for (int i = 0; i < proximas.length; i++) {
             if ((proximas[i][0] == X) && (proximas[i][1] == Y)) {
-                tabuleiro.getCasa(super.getCasa().getCoordenadaX(), super.getCasa().getCoordenadaY());
+                tabuleiro.getCasa(super.getCasa().getLinha(), super.getCasa().getColuna());
                 tabuleiro.getCasa(X, Y).colocarPeca(this);
                 return true;
             }
