@@ -1,14 +1,44 @@
+import java.awt.image.BufferedImage ;
+import java.io.File ;
+import java.io.IOException ;
+import javax.imageio.ImageIO ;
 public class Bispo extends Peca implements Movimentavel{
-
-    public Bispo(String nome,Casa casa,boolean branca) {
-        super(nome,casa) ;
-        this.branca = branca ;
-    }
-
+    private BufferedImage imagemPretaFundoBranco ;
+    private BufferedImage imagemPretaFundoVerde ;
+    private BufferedImage imagemBrancaFundoBranco ;
+    private BufferedImage imagemBrancaFundoVerde ;
     int qntCasas = 0;
     int[][] proximas = new int[14][2];
     int qntinimigas = 0;
     int[][] inimigas = new int[4][2];
+    public Bispo(String nome,Casa casa,boolean branca,String pretaFundoBranco,String pretaFundoVerde,String brancaFundoVerde,String brancaFundoBranco) {
+        super(nome,casa,branca) ;
+        this.branca = branca ;
+        try {
+            String caminhoDaImagem = "imagens/" + pretaFundoBranco; // Caminho relativo
+            this.imagemPretaFundoBranco = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + pretaFundoVerde; // Caminho relativo
+            this.imagemPretaFundoVerde = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + brancaFundoVerde; // Caminho relativo
+            this.imagemBrancaFundoVerde = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + brancaFundoBranco; // Caminho relativo
+            this.imagemBrancaFundoBranco = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public String getClassName() {
         return NomePeca.BISPO.getNome();
     }
@@ -85,6 +115,7 @@ public class Bispo extends Peca implements Movimentavel{
         }
         for (int i = 0; i < inimigas.length; i++) {
             if ((inimigas[i][0] == linha) && (inimigas[i][1] == coluna)) {
+                tabuleiro.getCasa(super.getCasa().getLinha(), super.getCasa().getColuna()).removerPeca();
                 tabuleiro.getCasa(linha, coluna).removerPeca();
                 tabuleiro.getCasa(linha, coluna).colocarPeca(this);
                 return true;
@@ -103,63 +134,34 @@ public class Bispo extends Peca implements Movimentavel{
         }
         return map;
     }
-
-    /*
-    //funcao que salva em uma matriz de 13 linhas e 2 colunas as possiveis casas que o bispo pode ir(sem levar em conta
-    //a ocupacao ou nao da casa primeira coluna salva a coordenadax e a segunda salva a coordenaday,posteriormente
-    //checaremos se as casas sao realmente possiveis de ir
-    public int[][] possiveisProximasPosicoes(Tabuleiro tabuleiro) {
-        int qntCasas = 0 ;
-        int[][] possiveisCasas = new int[32][2] ;
-        for (int i = casa.getCoordenadaX() - 1;i > 0;i--) {
-            if (casa.getCoordenadaY() - i > 0) {
-                if (!tabuleiro.getCasa(i,casa.getCoordenadaY() - i).isOcupada()) {
-                    possiveisCasas[qntCasas][0] = i;
-                    possiveisCasas[qntCasas][1] = casa.getCoordenadaY() - i;
-                    qntCasas = qntCasas + 1;
-                }
-                else {
-                    break;
-                }
-            }
-        }
-        for (int i = casa.getCoordenadaX() - 1;i > 0;i--) {
-            if (casa.getCoordenadaY() + i < 9) {
-                if (!tabuleiro.getCasa(i,casa.getCoordenadaY() + i).isOcupada()) {
-                    possiveisCasas[qntCasas][0] = i;
-                    possiveisCasas[qntCasas][1] = casa.getCoordenadaY() + i;
-                    qntCasas = qntCasas + 1;
-                }
-                else {
-                    break;
-                }
-            }
-        }
-        for (int i = casa.getCoordenadaX() + 1;i < 9;i++) {
-            if (casa.getCoordenadaY() - i > 0) {
-                if (!tabuleiro.getCasa(i,casa.getCoordenadaY() - i).isOcupada()) {
-                    possiveisCasas[qntCasas][0] = i;
-                    possiveisCasas[qntCasas][1] = casa.getCoordenadaY() - i;
-                    qntCasas = qntCasas + 1;
-                }
-                else {
-                    break;
-                }
-            }
-        }
-        for (int i = casa.getCoordenadaX() + 1;i < 9;i++) {
-            if (casa.getCoordenadaY() + i < 9) {
-                if (!tabuleiro.getCasa(i,casa.getCoordenadaY() + i).isOcupada()) {
-                    possiveisCasas[qntCasas][0] = i;
-                    possiveisCasas[qntCasas][1] = casa.getCoordenadaY() + i;
-                    qntCasas = qntCasas + 1;
-                }
-            }
-            else {
-                break ;
-            }
-        }
-        return possiveisCasas ;
+    public BufferedImage getImagemPretaFundoBranco() {
+        return imagemPretaFundoBranco;
     }
-    */
+
+    public BufferedImage getImagemPretaFundoVerde() {
+        return imagemPretaFundoVerde;
+    }
+
+    public BufferedImage getImagemBrancaFundoVerde() {
+        return imagemBrancaFundoVerde ;
+    }
+
+    public BufferedImage getImagemBrancaFundoBranco() {
+        return imagemBrancaFundoBranco ;
+    }
+
+    public void setImagemPretaFundoBranco(BufferedImage imagem) {
+        this.imagemPretaFundoBranco = imagem;
+    }
+
+    public int[][] getProximas() {
+        return proximas ;
+    }
+    public int[][] getInimigas() {
+        return inimigas ;
+    }
+
+    public boolean isBranca() {
+        return branca ;
+    }
 }

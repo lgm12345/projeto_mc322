@@ -19,6 +19,9 @@ public class Casa {
         System.out.println(peca.getNome() + "colocada na posicao" + linha + coluna) ;
     }
     public void removerPeca() {
+        String linha = String.valueOf(coordenadas[0]) ;
+        String coluna = String.valueOf(coordenadas[1]) ;
+        System.out.println(peca.getNome() + "removida da posicao" + linha + coluna) ;
         this.ocupada = false ;
         this.peca = null ;
     }

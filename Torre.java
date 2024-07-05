@@ -1,13 +1,43 @@
+import java.awt.image.BufferedImage ;
+import java.io.File ;
+import java.io.IOException ;
+import javax.imageio.ImageIO ;
 public class Torre extends Peca implements Movimentavel{
-    public Torre(String nome,Casa casa,boolean branca) {
-        super(nome,casa) ;
-        this.branca = branca ;
-    }
-
+    private BufferedImage imagemPretaFundoBranco ;
+    private BufferedImage imagemPretaFundoVerde ;
+    private BufferedImage imagemBrancaFundoBranco ;
+    private BufferedImage imagemBrancaFundoVerde ;
     int qntCasas = 0;
     int[][] proximas = new int[14][2];
     int qntinimigas = 0;
     int[][] inimigas = new int[4][2];
+    public Torre(String nome,Casa casa,boolean branca,String pretaFundoBranco,String pretaFundoVerde,String brancaFundoBranco,String brancaFundoVerde) {
+        super(nome,casa,branca) ;
+        try {
+            String caminhoDaImagem = "imagens/" + pretaFundoBranco; // Caminho relativo
+            this.imagemPretaFundoBranco = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + pretaFundoVerde; // Caminho relativo
+            this.imagemPretaFundoVerde = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + brancaFundoBranco; // Caminho relativo
+            this.imagemBrancaFundoBranco = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + brancaFundoVerde; // Caminho relativo
+            this.imagemBrancaFundoVerde = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public String getClassName() {
         return NomePeca.TORRE.getNome();
     }
@@ -83,6 +113,7 @@ public class Torre extends Peca implements Movimentavel{
         }
         for (int i = 0; i < inimigas.length; i++) {
             if ((inimigas[i][0] == linha) && (inimigas[i][1] == coluna)) {
+                tabuleiro.getCasa(super.getCasa().getLinha(), super.getCasa().getColuna()).removerPeca();
                 tabuleiro.getCasa(linha, coluna).removerPeca();
                 tabuleiro.getCasa(linha, coluna).colocarPeca(this);
                 return true;
@@ -103,35 +134,34 @@ public class Torre extends Peca implements Movimentavel{
         return map;
     }
 
-    //adicionar condicao de movimentacao para execucao do roque
-
-
-    /*
-
-    //Funcao que guarda as proximas possiveis posicoes para a torre sem contar ainda as casas ocupadas,e guarda em uma
-    //matriz em que a primeira coluna armazena a coordenada x e a segunda a coordenada y
-    public int[][] possivisProximasPosicoes(Tabuleiro tabuleiro) {
-        for (int i = 0;i < 8;i ++) {
-            if (!tabuleiro.getCasa(i, casa.getCoordenadaY()).isOcupada()) {
-                posssiveisCasas[qntCasas][0] = i ;
-                posssiveisCasas[qntCasas][1] = casa.getCoordenadaY() ;
-                qntCasas = qntCasas + 1 ;
-            }
-            else {
-                break;
-            }
-        }
-        for (int j = 0;j < 8;j ++) {
-            if (!tabuleiro.getCasa(casa.getCoordenadaX(),j).isOcupada()) {
-                posssiveisCasas[qntCasas][0] = casa.getCoordenadaX() ;
-                posssiveisCasas[qntCasas][1] = j ;
-                qntCasas = qntCasas + 1 ;
-            }
-            else {
-                break ;
-            }
-        }
-        return posssiveisCasas ;
+    public BufferedImage getImagemPretaFundoBranco() {
+        return imagemPretaFundoBranco ;
     }
-    */
+
+    public BufferedImage getImagemPretaFundoVerde() {
+        return imagemPretaFundoVerde ;
+    }
+
+    public BufferedImage getImagemBrancaFundoBranco() {
+        return imagemBrancaFundoBranco ;
+    }
+
+    public BufferedImage getImagemBrancaFundoVerde() {
+        return imagemBrancaFundoVerde ;
+    }
+
+    public void setImagemPretaVerde(BufferedImage imagem) {
+        this.imagemPretaFundoBranco = imagem;
+    }
+
+    public int[][] getProximas() {
+        return proximas ;
+    }
+    public int[][] getInimigas() {
+        return inimigas ;
+    }
+
+    public boolean isBranca() {
+        return branca ;
+    }
 }

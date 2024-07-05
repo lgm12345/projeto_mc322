@@ -2,7 +2,7 @@ public class Main{
     public static void main(String[] Args) {
         Tabuleiro tabuleiro = new Tabuleiro() ;
         tabuleiro.inicializaTabuleliro();
-        tabuleiro.moverPeca(0,1,2,2) ;
+        TabuleiroFrame frame = new TabuleiroFrame(tabuleiro) ;
     }
 
 }

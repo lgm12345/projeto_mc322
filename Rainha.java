@@ -1,14 +1,43 @@
+import java.awt.image.BufferedImage ;
+import java.io.File ;
+import java.io.IOException ;
+import javax.imageio.ImageIO ;
 public class Rainha extends Peca {
-
-    public Rainha(String nome, Casa casa, boolean branca) {
-        super(nome, casa);
-        this.branca = branca;
-    }
-
+    private BufferedImage imagemPretaFundoBranco ;
+    private BufferedImage imagemPretaFundoVerde ;
+    private BufferedImage imagemBrancaFundoBranco ;
+    private BufferedImage imagemBrancaFundoVerde ;
     int qntCasas = 0;
     int[][] proximas = new int[21][2];
     int qntinimigas = 0;
     int[][] inimigas = new int[8][2];
+    public Rainha(String nome, Casa casa, boolean branca,String pretaFundoBranco,String pretaFundoVerde,String brancaFundoBranco,String brancaFundoVerde) {
+        super(nome, casa,branca) ;
+        try {
+            String caminhoDaImagem = "imagens/" + pretaFundoBranco; // Caminho relativo
+            this.imagemPretaFundoBranco = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + pretaFundoVerde; // Caminho relativo
+            this.imagemPretaFundoVerde = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + brancaFundoBranco; // Caminho relativo
+            this.imagemBrancaFundoBranco = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + brancaFundoVerde; // Caminho relativo
+            this.imagemBrancaFundoVerde = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     //o metodo checknsave usa o metodo "isinrange" para verificar se a posicao x,y pertence ao tabuleiro
@@ -22,7 +51,6 @@ public class Rainha extends Peca {
                 proximas[qntCasas][0] = linha;
                 proximas[qntCasas][1] = coluna;
                 qntCasas += 1;
-                enemy = true;
             } else if (searchpeca(tabuleiro, linha, coluna) == -1) { //se nao esta vazio, verifica se eh inimiga
                 inimigas[qntinimigas][0] = linha;
                 inimigas[qntinimigas][1] = coluna;
@@ -33,7 +61,7 @@ public class Rainha extends Peca {
         return enemy;
     }
 
-    //o metodo listfreepositions toma as coordenadas atuais do cavalo e usa o metodo checknsave em loop para guardar todas posicoes livres possiveis
+    //o metodo listfreepositions toma as coordenadas atuais da rainha e usa o metodo checknsave em loop para guardar todas posicoes livres possiveis
     public void listfreepositions(Tabuleiro tabuleiro, int linha, int coluna) {
         int[][][] positions = new int[8][14][2]; //lista de posicoes para serem verificadas
         int[] lengths = new int[8]; // Controla o número de posições
@@ -104,62 +132,43 @@ public class Rainha extends Peca {
         }
         for (int i = 0; i < inimigas.length; i++) {
             if ((inimigas[i][0] == linha) && (inimigas[i][1] == coluna)) {
+                tabuleiro.getCasa(super.getCasa().getLinha(), super.getCasa().getColuna()).removerPeca();
                 tabuleiro.getCasa(linha, coluna).removerPeca();
                 tabuleiro.getCasa(linha, coluna).colocarPeca(this);
                 return true;
             }
         }
         return false;
-    /*
-    public int[][] possiveisProximasPosicoes(Tabuleiro tabuleiro) {
-        int qntCasas = 0 ;
-        int [][] possiveisCasas = new int[64][2] ;
-        for (int i = casa.getCoordenadaX() - 1;i > 0;i--) {
-            if (casa.getCoordenadaY() - i > 0) {
-                possiveisCasas[qntCasas][0] = i ;
-                possiveisCasas[qntCasas][1] = casa.getCoordenadaY() - i ;
-                qntCasas = qntCasas + 1 ;
-            }
-            if (casa.getCoordenadaY() + i < 9) {
-                possiveisCasas[qntCasas][0] = i ;
-                possiveisCasas[qntCasas][1] = casa.getCoordenadaY() + i ;
-                qntCasas = qntCasas + 1 ;
-            }
-        }
-        for (int i = casa.getCoordenadaX() + 1;i < 9;i++) {
-            if (casa.getCoordenadaY() - i > 0) {
-                possiveisCasas[qntCasas][0] = i ;
-                possiveisCasas[qntCasas][1] = casa.getCoordenadaY() - i ;
-                qntCasas = qntCasas + 1 ;
-            }
-            if (casa.getCoordenadaY() + i < 9) {
-                possiveisCasas[qntCasas][0] = i ;
-                possiveisCasas[qntCasas][1] = casa.getCoordenadaY() + i ;
-                qntCasas = qntCasas + 1 ;
-            }
-        }
-        for (int i = 1;i < 9;i ++) {
-            if (!tabuleiro.getCasa(i, casa.getCoordenadaY()).isOcupada()) {
-                possiveisCasas[qntCasas][0] = i ;
-                possiveisCasas[qntCasas][1] = casa.getCoordenadaY() ;
-                qntCasas = qntCasas + 1 ;
-            }
-            else {
-                break ;
-            }
-        }
-        for (int j = 1;j < 9;j ++) {
-            if (!tabuleiro.getCasa(casa.getCoordenadaX(), j).isOcupada()) {
-                possiveisCasas[qntCasas][0] = casa.getCoordenadaX();
-                possiveisCasas[qntCasas][1] = j;
-                qntCasas = qntCasas + 1;
-            }
-            else {
-                break ;
-            }
-        }
-        return possiveisCasas ;
     }
-    */
+    public BufferedImage getImagemPretaFundoBranco() {
+        return imagemPretaFundoBranco;
     }
+
+    public BufferedImage getImagemPretaFundoVerde() {
+        return imagemPretaFundoVerde;
+    }
+
+    public BufferedImage getImagemBrancaFundoBranco() {
+        return imagemBrancaFundoBranco ;
+    }
+
+    public BufferedImage getImagemBrancaFundoVerde() {
+        return imagemBrancaFundoVerde ;
+    }
+
+    public void setImagemPretaFundoBranco(BufferedImage imagem) {
+        this.imagemPretaFundoBranco = imagem;
+    }
+
+    public int[][] getProximas() {
+        return proximas ;
+    }
+    public int[][] getInimigas() {
+        return inimigas ;
+    }
+
+    public boolean isBranca() {
+        return branca ;
+    }
+
 }

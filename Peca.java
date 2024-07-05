@@ -6,9 +6,10 @@ public abstract class Peca {
     protected Casa casa ;
     protected boolean branca ;
 
-    Peca(String nome,Casa casa) {
+    Peca(String nome,Casa casa,boolean branca) {
         this.nome = nome ;
         this.casa = casa;
+        this.branca = branca ;
     }
 
     public String getClassName() {
@@ -66,5 +67,5 @@ public abstract class Peca {
         return new int[0][0] ;
     }
 
-    public abstract boolean move(Tabuleiro tabuleiro,int X,int Y) ;
+    public abstract boolean move(Tabuleiro tabuleiro,int linha,int coluna) ;
 }

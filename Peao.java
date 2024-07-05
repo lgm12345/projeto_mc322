@@ -1,20 +1,51 @@
-import java.util.Objects;
-
+import java.awt.image.BufferedImage ;
+import java.io.File ;
+import java.io.IOException ;
+import javax.imageio.ImageIO ;
 public class Peao extends Peca implements Movimentavel{
     public boolean first ;
     private boolean promoted;
     private int step;
-
-    public Peao(String nome,Casa casa,boolean branca) {
-        super(nome,casa) ;
+    private BufferedImage imagemPretaFundoBranco ;
+    private BufferedImage imagemBrancaFundoBranco ;
+    private BufferedImage imagemPretaFundoVerde ;
+    private BufferedImage imagemBrancaFundoVerde ;
+    int qntCasas = 0;
+    int[][] proximas = new int[4][2];
+    int qntinimigas = 0;
+    int[][] inimigas = new int[4][2];
+    public Peao(String nome,Casa casa,boolean branca,String pretaFundoBranco,String brancaFundoBranco,String pretaFundoVerde,String brancaFundoVerde) {
+        super(nome,casa,branca) ;
         this.first = true ;
-        this.branca = branca ;
         this.promoted = false;
-
         if(branca){
             step = 1;
         } else {
             step = -1;
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + pretaFundoBranco; // Caminho relativo
+            this.imagemPretaFundoBranco = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + brancaFundoBranco; // Caminho relativo
+            this.imagemBrancaFundoBranco = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + pretaFundoVerde; // Caminho relativo
+            this.imagemPretaFundoVerde = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String caminhoDaImagem = "imagens/" + brancaFundoVerde; // Caminho relativo
+            this.imagemBrancaFundoVerde = ImageIO.read(getClass().getClassLoader().getResourceAsStream(caminhoDaImagem));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     //metodo que identifica que o peao ja realizou o primeiro movimento
@@ -27,10 +58,6 @@ public class Peao extends Peca implements Movimentavel{
         this.promoted = true;
     }
 
-    int qntCasas = 0;
-    int[][] proximas = new int[2][2];
-    int qntinimigas = 0;
-    int[][] inimigas = new int[2][2];
 
     //o metodo que movimenta o peao deve ter uma condicao: quando a coordenada de destino eh X,7 ele eh promovido a uma outra peca.
 
@@ -74,6 +101,7 @@ public class Peao extends Peca implements Movimentavel{
                 }
             }
         }
+        qntCasas = 0 ;
         return enemy ;
     }
 
@@ -115,6 +143,7 @@ public class Peao extends Peca implements Movimentavel{
         }
         for (int i = 0; i < inimigas.length; i++) {
             if ((inimigas[i][0] == linhaDestino) && (inimigas[i][1] == colunaDestino)) {
+                tabuleiro.getCasa(super.getCasa().getLinha(), super.getCasa().getColuna()).removerPeca();
                 tabuleiro.getCasa(linhaDestino, colunaDestino).removerPeca();
                 tabuleiro.getCasa(linhaDestino, colunaDestino).colocarPeca(this);
                 if (first) {
@@ -135,5 +164,37 @@ public class Peao extends Peca implements Movimentavel{
         }
         return map;
     }
+    public BufferedImage getImagemPretaFundoBranco() {
+        return imagemPretaFundoBranco;
+    }
 
+    public BufferedImage getImagemBrancaFundoBranco() {
+        return imagemBrancaFundoBranco;
+    }
+
+    public BufferedImage getImagemPretaFundoVerde() {
+        return imagemPretaFundoVerde ;
+    }
+
+    public BufferedImage getImagemBrancaFundoVerde() {
+        return imagemBrancaFundoVerde ;
+    }
+
+    public void setImagemPretaFundoBranco(BufferedImage imagem) {
+        this.imagemPretaFundoBranco = imagem;
+    }
+
+    public void setImagemBrancaFundoBranco(BufferedImage imagem) {
+        this.imagemBrancaFundoBranco = imagem;
+    }
+
+    public int[][] getProximas() {
+        return proximas ;
+    }
+    public int[][] getInimigas() {
+        return inimigas ;
+    }
+    public boolean isBranca() {
+        return branca ;
+    }
 }
